@@ -1,0 +1,65 @@
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+#include <vector>
+
+class PasswordGenerator {
+public:
+    std::string generatePassword(int length, bool useUpper, bool useLower, bool useNumbers, bool useSymbols) {
+        std::string upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        std::string lower = "abcdefghijklmnopqrstuvwxyz";
+        std::string numbers = "0123456789";
+        std::string symbols = "!@#$%^&*()_-+=<>?";
+        std::string allChars;
+
+        if (useUpper) allChars += upper;
+        if (useLower) allChars += lower;
+        if (useNumbers) allChars += numbers;
+        if (useSymbols) allChars += symbols;
+
+        if (allChars.empty()) {
+            std::cerr << "Error: At least one character type must be selected.\n";
+            return "";
+        }
+
+        std::string password;
+        std::srand(std::time(0));
+
+        for (int i = 0; i < length; ++i) {
+            int index = std::rand() % allChars.size();
+            password += allChars[index];
+        }
+
+        return password;
+    }
+};
+
+int main() {
+    PasswordGenerator generator;
+    int length;
+    bool useUpper, useLower, useNumbers, useSymbols;
+
+    std::cout << "Password Generator\n";
+    std::cout << "Enter desired password length: ";
+    std::cin >> length;
+
+    std::cout << "Include uppercase letters? (1 for yes, 0 for no): ";
+    std::cin >> useUpper;
+
+    std::cout << "Include lowercase letters? (1 for yes, 0 for no): ";
+    std::cin >> useLower;
+
+    std::cout << "Include numbers? (1 for yes, 0 for no): ";
+    std::cin >> useNumbers;
+
+    std::cout << "Include symbols? (1 for yes, 0 for no): ";
+    std::cin >> useSymbols;
+
+    std::string password = generator.generatePassword(length, useUpper, useLower, useNumbers, useSymbols);
+    if (!password.empty()) {
+        std::cout << "Generated Password: " << password << "\n";
+    }
+
+    return 0;
+}
